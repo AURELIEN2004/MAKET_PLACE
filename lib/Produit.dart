@@ -79,13 +79,13 @@ class Produit extends StatelessWidget {
               leftProduct: ProductInfo(
                 title: 'Tomates',
                 subtitle: 'Fraîches, locales',
-                image: 'assets/images/tomates.jpg',
+                image: 'assets/images/tomates.png',
                 backgroundColor: Colors.red[100]!,
               ),
               rightProduct: ProductInfo(
                 title: 'Pommes',
                 subtitle: 'Douces et croquantes',
-                image: 'assets/images/pommes.jpg',
+                image: 'assets/images/pommes.png',
                 backgroundColor: Colors.green[50]!,
               ),
             ),
@@ -96,13 +96,13 @@ class Produit extends StatelessWidget {
               leftProduct: ProductInfo(
                 title: 'Carottes',
                 subtitle: 'Bio, du terroir',
-                image: 'assets/images/carottes.jpg',
+                image: 'assets/images/carottes.png',
                 backgroundColor: Colors.orange[100]!,
               ),
               rightProduct: ProductInfo(
                 title: 'Lait',
                 subtitle: 'Frais du jour',
-                image: 'assets/images/lait.jpg',
+                image: 'assets/images/lait.png',
                 backgroundColor: Colors.blue[50]!,
               ),
             ),
@@ -113,7 +113,7 @@ class Produit extends StatelessWidget {
               leftProduct: ProductInfo(
                 title: 'Fromage',
                 subtitle: 'Artisanal',
-                image: 'assets/images/fromage.jpg',
+                image: 'assets/images/fromage.png',
                 backgroundColor: Colors.yellow[100]!,
               ),
               rightProduct: ProductInfo(
@@ -273,7 +273,8 @@ class ProductCard extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     child: Image.asset(
-                                       'assets/images/legumes_frais.png',
+                      image,
+                      
 
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {

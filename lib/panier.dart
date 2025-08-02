@@ -24,7 +24,7 @@ class Panier extends StatelessWidget {
               title: 'Carottes 500g',
             ),
             ItemCard(
-              image: 'assets/images/pommes_de_terre.png',
+              image: 'assets/images/miel.png',
               title: 'Pommes de terre 1kg',
             ),
             const SizedBox(height: 20),
@@ -40,7 +40,8 @@ class Panier extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Action à définir
+                    Navigator.pushNamed(context, '/commande');
+
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
                 child: const Text("Passer la commande"),
