@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'E-commerce App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Acceuil(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
 
 class Acceuil extends StatefulWidget {
   @override
@@ -94,7 +112,7 @@ class _AcceuilState extends State<Acceuil> {
             SizedBox(height: 24),
                
             // Section Promotion en cours
-              Text(
+            Text(
               'Promotions en cours',
               style: TextStyle(
                 fontSize: 20,
@@ -102,61 +120,38 @@ class _AcceuilState extends State<Acceuil> {
                 color: Colors.black87,
               ),
             ),
-                  SizedBox(height: 12),
+            SizedBox(height: 12),
             Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.amber[50],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.amber[200]!),
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  PromotionCard(
+                    title: 'Profiter de nos offres spéciales !',
+                    subtitle: '30% de réduction sur les produits sélectionnés',
+                    validityText: 'Valable jusqu\'au 30 septembre',
+                    image: 'assets/images/oeufs_promotion.png',
+                    productTitle: 'Oeufs frais',
+                  ),
+                  SizedBox(width: 12),
+                  PromotionCard(
+                    title: 'Offre limitée !',
+                    subtitle: '25% de réduction sur les fruits',
+                    validityText: 'Valable jusqu\'au 15 octobre',
+                    image: 'assets/images/fruits_promotion.png',
+                    productTitle: 'Fruits bio',
+                  ),
+                  SizedBox(width: 12),
+                  PromotionCard(
+                    title: 'Promotion flash !',
+                    subtitle: '40% de réduction sur les légumes',
+                    validityText: 'Valable jusqu\'au 20 septembre',
+                    image: 'assets/images/legumes_promotion.png',
+                    productTitle: 'Légumes frais',
+                  ),
+                  SizedBox(width: 16),
+                ],
               ),
-              
-              child: Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Profiter de nos offres spéciales !',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.amber[800],
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            '30% de réduction sur les produits sélectionnés',
-            style: TextStyle(
-              fontSize: 14,
-              color: const Color.fromARGB(255, 14, 13, 13),
-            ),
-          ),
-          Text(
-            'Valable jusqu\'au 30 septembre',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.amber[800],
-            ),
-          ),
-        ],
-      ),
-    ),
-    SizedBox(width: 12),
-    ProductCard(
-      image: 'assets/images/oeufs_promotion.png',
-      title: 'Oeufs frais',
-      backgroundColor: Colors.green[100]!,
-      width: 200,
-    ),
-  ],
-)
-
             ),
             SizedBox(height: 24),
 
@@ -181,45 +176,38 @@ class _AcceuilState extends State<Acceuil> {
                 CategoryCard(
                   title: 'Fruits',
                   backgroundColor: Colors.orange[100]!,
-                  icon: Icons.apple,
-                  iconColor: Colors.orange[600]!,
+                  image: 'assets/images/category_fruits.png',
                 ),
                 CategoryCard(
                   title: 'Légumes',
                   backgroundColor: Colors.green[100]!,
-                  icon: Icons.eco,
-                  iconColor: Colors.green[600]!,
+                  image: 'assets/images/category_legumes.png',
                 ),
                 CategoryCard(
                   title: 'Produits laitiers',
                   backgroundColor: Colors.blue[100]!,
-                  icon: Icons.local_drink,
-                  iconColor: Colors.blue[600]!,
+                  image: 'assets/images/category_laitiers.png',
                 ),
                 CategoryCard(
                   title: 'Viandes',
                   backgroundColor: Colors.red[100]!,
-                  icon: Icons.restaurant,
-                  iconColor: Colors.red[600]!,
+                  image: 'assets/images/category_viandes.png',
                 ),
                 CategoryCard(
                   title: 'Boulangerie',
                   backgroundColor: Colors.brown[100]!,
-                  icon: Icons.bakery_dining,
-                  iconColor: Colors.brown[600]!,
+                  image: 'assets/images/category_boulangerie.png',
                 ),
                 CategoryCard(
                   title: 'Boissons',
                   backgroundColor: Colors.teal[100]!,
-                  icon: Icons.local_cafe,
-                  iconColor: Colors.teal[600]!,
+                  image: 'assets/images/category_boissons.png',
                 ),
               ],
             ),
           ],
         ),
       ),
-     
     );
   }
 }
@@ -321,18 +309,95 @@ class ProductCard extends StatelessWidget {
   }
 }
 
+class PromotionCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String validityText;
+  final String image;
+  final String productTitle;
+
+  const PromotionCard({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.validityText,
+    required this.image,
+    required this.productTitle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 320,
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.amber[50],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.amber[200]!),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.amber[800],
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  validityText,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.amber[800],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(width: 12),
+          Container(
+            width: 80,
+            height: 80,
+            child: ProductCard(
+              image: image,
+              title: productTitle,
+              backgroundColor: Colors.green[100]!,
+              width: 80,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class CategoryCard extends StatelessWidget {
   final String title;
   final Color backgroundColor;
-  final IconData icon;
-  final Color iconColor;
+  final String image;
 
   const CategoryCard({
     Key? key,
     required this.title,
     required this.backgroundColor,
-    required this.icon,
-    required this.iconColor,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -356,25 +421,63 @@ class CategoryCard extends StatelessWidget {
           onTap: () {
             // Navigation vers la catégorie
           },
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
               children: [
-                Icon(
-                  icon,
-                  size: 32,
-                  color: iconColor,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
+                // Image de la catégorie
+                Positioned.fill(
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: backgroundColor,
+                        child: Icon(
+                          _getIconForCategory(title),
+                          size: 40,
+                          color: _getColorForCategory(title),
+                        ),
+                      );
+                    },
                   ),
-                  textAlign: TextAlign.center,
+                ),
+                // Overlay gradient
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.4),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Titre en bas
+                Positioned(
+                  bottom: 12,
+                  left: 12,
+                  right: 12,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black.withOpacity(0.7),
+                          offset: Offset(1, 1),
+                          blurRadius: 3,
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ],
             ),
@@ -382,5 +485,43 @@ class CategoryCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconData _getIconForCategory(String categoryTitle) {
+    switch (categoryTitle.toLowerCase()) {
+      case 'fruits':
+        return Icons.apple;
+      case 'légumes':
+        return Icons.eco;
+      case 'produits laitiers':
+        return Icons.local_drink;
+      case 'viandes':
+        return Icons.restaurant;
+      case 'boulangerie':
+        return Icons.bakery_dining;
+      case 'boissons':
+        return Icons.local_cafe;
+      default:
+        return Icons.shopping_bag;
+    }
+  }
+
+  Color _getColorForCategory(String categoryTitle) {
+    switch (categoryTitle.toLowerCase()) {
+      case 'fruits':
+        return Colors.orange[600]!;
+      case 'légumes':
+        return Colors.green[600]!;
+      case 'produits laitiers':
+        return Colors.blue[600]!;
+      case 'viandes':
+        return Colors.red[600]!;
+      case 'boulangerie':
+        return Colors.brown[600]!;
+      case 'boissons':
+        return Colors.teal[600]!;
+      default:
+        return Colors.grey[600]!;
+    }
   }
 }

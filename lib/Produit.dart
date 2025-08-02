@@ -59,9 +59,17 @@ class Produit extends StatelessWidget {
                   trailing: Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey[700]),
                 ),
                 SizedBox(width: 8),
-                FilterButton(text: 'Prix'),
+
+                FilterButton(text: 'Prix',
+                 icon: Icons.price_change,
+                  trailing: Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey[700]),
+                 ),
                 SizedBox(width: 8),
-                FilterButton(text: 'Origine'),
+
+                FilterButton(text: 'Origine',
+                 icon: Icons.location_on,
+                  trailing: Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey[700]),
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -265,7 +273,8 @@ class ProductCard extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     child: Image.asset(
-                      image,
+                                       'assets/images/legumes_frais.png',
+
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
