@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'commande.dart'; // Assure you have a Commande page defined in commande.dart
 
 class Panier extends StatelessWidget {
   const Panier({super.key});
@@ -38,15 +39,18 @@ class Panier extends StatelessWidget {
             SummaryRow(label: "Total", value: "20,00 €"),
             const SizedBox(height: 20),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-                    Navigator.pushNamed(context, '/commande');
-
-                },
+                 child: ElevatedButton(            
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Commande()),
+                );
+          },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
                 child: const Text("Passer la commande"),
               ),
-            ),
+            
+            )
           ],
         ),
       ),

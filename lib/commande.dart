@@ -16,7 +16,12 @@ class _CommandeState extends State<Commande> {
       appBar: AppBar(
         title: const Text("Commande"),
         backgroundColor: Colors.redAccent,
-        leading: const Icon(Icons.arrow_back),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -130,7 +135,10 @@ class _CommandeState extends State<Commande> {
                   "Confirmer la commande",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
+                
               ),
+              
+              
             ),
           ],
         ),
