@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:foodexpress/authentification/authentification.dart';
 import 'package:foodexpress/favorites.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.deepOrange,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Favorites(),
+      home: AuthWrapper(),
   
     );
   }
