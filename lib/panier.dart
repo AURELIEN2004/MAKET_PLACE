@@ -23,36 +23,73 @@ class _PanierState extends State<Panier> {
         backgroundColor: Colors.redAccent,
         foregroundColor: Colors.white,
         actions: [
+          // Panier icon with badge
+          Stack(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+          // Navigation vers ton écran panier
+          // Ici, tu es déjà sur l'écran panier, donc rien à faire
+            },
+          ),
           if (_cartManager.items.isNotEmpty)
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Vider le panier'),
-                      content: Text('Êtes-vous sûr de vouloir vider votre panier ?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text('Annuler'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              _cartManager.clearCart();
-                          });
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Vider', style: TextStyle(color: Colors.red)),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: Icon(Icons.delete_sweep),
+            Positioned(
+          right: 4,
+          top: 4,
+          child: Container(
+            padding: const EdgeInsets.all(4),
+            decoration: const BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
             ),
+            constraints: const BoxConstraints(
+              minWidth: 20,
+              minHeight: 20,
+            ),
+            child: Text(
+              '${_cartManager.items.length}', // 🔢 Affiche le nombre de produits
+              style: const TextStyle(
+            color: Color.fromARGB(255, 73, 72, 72),
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+            ),
+        ],
+          ),
+          if (_cartManager.items.isNotEmpty)
+        IconButton(
+          onPressed: () {
+            showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Vider le panier'),
+              content: Text('Êtes-vous sûr de vouloir vider votre panier ?'),
+              actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+              _cartManager.clearCart();
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Vider', style: TextStyle(color: Colors.red)),
+            ),
+              ],
+            );
+          },
+            );
+          },
+          icon: Icon(Icons.delete_sweep),
+        ),
         ],
       ),
       body: _cartManager.items.isEmpty

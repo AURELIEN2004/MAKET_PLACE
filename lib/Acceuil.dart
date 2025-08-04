@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodexpress/Produit.dart';
+import 'package:foodexpress/panier.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,11 +52,17 @@ class _AcceuilState extends State<Acceuil> {
         actions: [
           IconButton(
             icon: Icon(Icons.search, color: Colors.black),
-            onPressed: () {},
-          ),
-          IconButton(
+            onPressed: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Produit()),
+              );
+            },          ),
+            IconButton(
             icon: Icon(Icons.shopping_cart_outlined, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+             
+            },
           ),
         ],
       ),
