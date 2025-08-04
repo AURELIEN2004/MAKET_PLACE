@@ -119,7 +119,7 @@ class Produit extends StatelessWidget {
               rightProduct: ProductInfo(
                 title: 'Œufs',
                 subtitle: 'De poules élevées au sol',
-                image: 'assets/images/oeufs.jpg',
+                image: 'assets/images/oeufs_promotion.png',
                 backgroundColor: Colors.brown[50]!,
               ),
             ),
