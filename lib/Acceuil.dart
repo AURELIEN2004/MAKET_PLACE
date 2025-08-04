@@ -57,12 +57,7 @@ class _AcceuilState extends State<Acceuil> {
               MaterialPageRoute(builder: (context) => Produit()),
               );
             },          ),
-            IconButton(
-            icon: Icon(Icons.shopping_cart_outlined, color: Colors.black),
-            onPressed: () {
-             
-            },
-          ),
+            
         ],
       ),
       body: SingleChildScrollView(

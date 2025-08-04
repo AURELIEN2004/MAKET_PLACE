@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodexpress/details.dart';
 import 'package:foodexpress/models/product_model.dart';
+import 'package:foodexpress/panier.dart';
 
 class Produit extends StatefulWidget {
   @override
@@ -196,6 +197,15 @@ class _ProduitState extends State<Produit> {
         ),
         centerTitle: true,
         actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_cart_outlined, color: Colors.black),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Panier()),
+              );
+            },
+          ),
           // Bouton pour réinitialiser les filtres
           IconButton(
             icon: Icon(Icons.clear_all, color: Colors.black),
