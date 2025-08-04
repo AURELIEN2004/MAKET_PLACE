@@ -33,6 +33,10 @@ class _DetailsState extends State<Details> {
             Navigator.pop(context);
           },
         ),
+        title: Text(
+          widget.product.title + ' Details',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.favorite_border, color: Colors.black),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodexpress/Produit.dart';
-import 'package:foodexpress/panier.dart';
 
 void main() {
   runApp(MyApp());
