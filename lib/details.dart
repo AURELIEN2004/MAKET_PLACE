@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:foodexpress/models/product_model.dart';
+import 'package:foodexpress/panier.dart';
+// Import your product_model.dart file here
+// import 'product_model.dart';
 
 class Details extends StatefulWidget {
+  final Product product;
+
+  const Details({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
   @override
   _DetailsState createState() => _DetailsState();
 }
 
 class _DetailsState extends State<Details> {
   int quantity = 1;
+  final CartManager _cartManager = CartManager();
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +52,10 @@ class _DetailsState extends State<Details> {
             Container(
               height: 300,
               width: double.infinity,
-              color: Colors.orange[50],
+              color: widget.product.backgroundColor.withOpacity(0.3),
               child: Center(
                 child: Image.asset(
-                  'assets/images/confiture_fraise.jpg',
+                  widget.product.image,
                   height: 200,
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) {
@@ -51,13 +63,13 @@ class _DetailsState extends State<Details> {
                       height: 200,
                       width: 150,
                       decoration: BoxDecoration(
-                        color: Colors.orange[100],
+                        color: widget.product.backgroundColor,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
                         Icons.local_grocery_store,
                         size: 60,
-                        color: Colors.orange[600],
+                        color: widget.product.backgroundColor.withOpacity(0.7),
                       ),
                     );
                   },
@@ -70,9 +82,9 @@ class _DetailsState extends State<Details> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Titre et prix
+                  // Titre et description
                   Text(
-                    'Confiture fraise',
+                    widget.product.title,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -81,7 +93,16 @@ class _DetailsState extends State<Details> {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Une confiture artisanale fait avec amour pour vous donner le meilleur du goût fraise. Le produit est 100% naturel.',
+                    widget.product.subtitle,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    widget.product.description,
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
@@ -92,7 +113,7 @@ class _DetailsState extends State<Details> {
 
                   // Prix
                   Text(
-                    '2500 F',
+                    widget.product.price,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -153,24 +174,26 @@ class _DetailsState extends State<Details> {
                   SizedBox(height: 20),
 
                   // Ingrédients
-                  Text(
-                    'Ingrédients',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                  if (widget.product.ingredients.isNotEmpty) ...[
+                    Text(
+                      'Ingrédients',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    '• Fraises (60%)\n• Sucre\n• Pectine\n• Acide citrique',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                      height: 1.5,
+                    SizedBox(height: 8),
+                    Text(
+                      widget.product.ingredients.map((ingredient) => '• $ingredient').join('\n'),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                        height: 1.5,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20),
+                    SizedBox(height: 20),
+                  ],
 
                   // Avis clients
                   Row(
@@ -275,7 +298,7 @@ class _DetailsState extends State<Details> {
                     name: 'Andrée Fotso',
                     rating: 5,
                     time: '23h',
-                    comment: 'Excellent produit! La confiture est délicieuse et on sent vraiment le goût des fraises.',
+                    comment: 'Excellent produit! Très frais et de bonne qualité.',
                   ),
                   SizedBox(height: 12),
                   ReviewCard(
@@ -289,7 +312,7 @@ class _DetailsState extends State<Details> {
                     name: 'Marie Ngo',
                     rating: 5,
                     time: '1 semaine',
-                    comment: 'Parfait pour mes tartines du matin !',
+                    comment: 'Parfait pour mes repas quotidiens !',
                   ),
                   SizedBox(height: 80), // Espace pour le bouton flottant
                 ],
@@ -305,10 +328,21 @@ class _DetailsState extends State<Details> {
         child: ElevatedButton(
           onPressed: () {
             // Ajouter au panier
+            _cartManager.addToCart(widget.product, quantity);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Produit ajouté au panier'),
+                content: Text('${widget.product.title} ajouté au panier (x$quantity)'),
                 backgroundColor: Colors.green,
+                action: SnackBarAction(
+                  label: 'Voir panier',
+                  textColor: Colors.white,
+                  onPressed: () {
+                     Navigator.push(
+                       context,
+                       MaterialPageRoute(builder: (context) => Panier()),
+                    );
+                  },
+                ),
               ),
             );
           },

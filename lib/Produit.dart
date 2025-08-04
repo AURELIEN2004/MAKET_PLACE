@@ -1,9 +1,75 @@
 import 'package:flutter/material.dart';
 import 'package:foodexpress/details.dart';
-
-
+import 'package:foodexpress/models/product_model.dart';
+// Import your details.dart and product_model.dart files here
+// import 'details.dart';
+// import 'product_model.dart';
 
 class Produit extends StatelessWidget {
+  // Liste des produits avec leurs informations complètes
+  final List<Product> products = [
+    Product(
+      id: '1',
+      title: 'Tomates',
+      subtitle: 'Fraîches, locales',
+      description: 'Tomates fraîches cultivées localement, riches en vitamines et parfaites pour vos salades et plats cuisinés. Récoltées à maturité pour un goût optimal.',
+      image: 'assets/images/tomates.png',
+      price: '1500 F',
+      ingredients: ['Tomates fraîches 100%'],
+      backgroundColor: Colors.red[100]!,
+    ),
+    Product(
+      id: '2',
+      title: 'Pommes',
+      subtitle: 'Douces et croquantes',
+      description: 'Pommes sucrées et croquantes, parfaites pour le goûter ou en dessert. Riches en fibres et vitamines, elles sont idéales pour une alimentation saine.',
+      image: 'assets/images/pommes.png',
+      price: '2000 F',
+      ingredients: ['Pommes fraîches 100%'],
+      backgroundColor: Colors.green[50]!,
+    ),
+    Product(
+      id: '3',
+      title: 'Carottes',
+      subtitle: 'Bio, du terroir',
+      description: 'Carottes biologiques cultivées dans nos fermes locales. Croquantes et sucrées, elles sont parfaites crues ou cuites, riches en bêta-carotène.',
+      image: 'assets/images/carottes.png',
+      price: '1200 F',
+      ingredients: ['Carottes biologiques 100%'],
+      backgroundColor: Colors.orange[100]!,
+    ),
+    Product(
+      id: '4',
+      title: 'Lait',
+      subtitle: 'Frais du jour',
+      description: 'Lait frais pasteurisé du jour, provenant de vaches élevées en pâturages. Riche en calcium et protéines, idéal pour toute la famille.',
+      image: 'assets/images/lait.png',
+      price: '800 F',
+      ingredients: ['Lait pasteurisé', 'Vitamines A et D'],
+      backgroundColor: Colors.blue[50]!,
+    ),
+    Product(
+      id: '5',
+      title: 'Fromage',
+      subtitle: 'Artisanal',
+      description: 'Fromage artisanal fabriqué selon les méthodes traditionnelles. Affiné à la perfection, il offre un goût authentique et une texture crémeuse.',
+      image: 'assets/images/fromage.png',
+      price: '3500 F',
+      ingredients: ['Lait', 'Ferments lactiques', 'Sel', 'Présure'],
+      backgroundColor: Colors.yellow[100]!,
+    ),
+    Product(
+      id: '6',
+      title: 'Œufs',
+      subtitle: 'De poules élevées au sol',
+      description: 'Œufs frais de poules élevées au sol dans de bonnes conditions. Riches en protéines de haute qualité, parfaits pour tous vos plats.',
+      image: 'assets/images/oeufs_promotion.png',
+      price: '2500 F',
+      ingredients: ['Œufs frais de poules élevées au sol'],
+      backgroundColor: Colors.brown[50]!,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,82 +126,46 @@ class Produit extends StatelessWidget {
                   trailing: Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey[700]),
                 ),
                 SizedBox(width: 8),
-
-                FilterButton(text: 'Prix',
-                 icon: Icons.price_change,
+                FilterButton(
+                  text: 'Prix',
+                  icon: Icons.price_change,
                   trailing: Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey[700]),
-                 ),
+                ),
                 SizedBox(width: 8),
-
-                FilterButton(text: 'Origine',
-                 icon: Icons.location_on,
+                FilterButton(
+                  text: 'Origine',
+                  icon: Icons.location_on,
                   trailing: Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey[700]),
                 ),
               ],
             ),
             SizedBox(height: 20),
 
-            // Section Tomates - Pommes
-           ProductSection(
-  leftProduct: ProductInfo(
-    title: 'Tomates',
-    subtitle: 'Fraîches, locales',
-    image: 'assets/images/tomates.png',
-    backgroundColor: Colors.red[100]!,
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) =>Details()),
-      );
-    },  
-  ),
-
-  rightProduct: ProductInfo(
-    title: 'Pommes',
-    subtitle: 'Douces et croquantes',
-    image: 'assets/images/pommes.png',
-    backgroundColor: Colors.green[50]!,
-    onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Details()),
-      );
-    },
-  ),
-),
-
-
-            // Section Carottes - Lait
-            ProductSection(
-              leftProduct: ProductInfo(
-                title: 'Carottes',
-                subtitle: 'Bio, du terroir',
-                image: 'assets/images/carottes.png',
-                backgroundColor: Colors.orange[100]!,
+            // Grille de produits
+            GridView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 16,
+                childAspectRatio: 0.75,
               ),
-              rightProduct: ProductInfo(
-                title: 'Lait',
-                subtitle: 'Frais du jour',
-                image: 'assets/images/lait.png',
-                backgroundColor: Colors.blue[50]!,
-              ),
-            ),
-            SizedBox(height: 16),
-
-            // Section Fromage - Œufs
-            ProductSection(
-              leftProduct: ProductInfo(
-                title: 'Fromage',
-                subtitle: 'Artisanal',
-                image: 'assets/images/fromage.png',
-                backgroundColor: Colors.yellow[100]!,
-              ),
-              rightProduct: ProductInfo(
-                title: 'Œufs',
-                subtitle: 'De poules élevées au sol',
-                image: 'assets/images/oeufs_promotion.png',
-                backgroundColor: Colors.brown[50]!,
-              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return ProductCard(
+                  product: product,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Details(product: product),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
@@ -190,96 +220,21 @@ class FilterButton extends StatelessWidget {
   }
 }
 
-class ProductInfo extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String image;
-  final Color backgroundColor;
-  final VoidCallback? onTap; // 👉 ajoute cette ligne
-
-  const ProductInfo({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.image,
-    required this.backgroundColor,
-    this.onTap, // 👉 ajoute ceci aussi
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap, // 👈 rend toute la carte cliquable
-      child: Container(
-        color: backgroundColor,
-        child: Column(
-          children: [
-            Image.asset(image, width: 120, height: 120),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            Text(subtitle),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProductSection extends StatelessWidget {
-  final ProductInfo leftProduct;
-  final ProductInfo rightProduct;
-
-  const ProductSection({
-    Key? key,
-    required this.leftProduct,
-    required this.rightProduct,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: ProductCard(
-            title: leftProduct.title,
-            subtitle: leftProduct.subtitle,
-            image: leftProduct.image,
-            backgroundColor: leftProduct.backgroundColor,
-          ),
-        ),
-        SizedBox(width: 12),
-        Expanded(
-          child: ProductCard(
-            title: rightProduct.title,
-            subtitle: rightProduct.subtitle,
-            image: rightProduct.image,
-            backgroundColor: rightProduct.backgroundColor,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class ProductCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String image;
-  final Color backgroundColor;
+  final Product product;
+  final VoidCallback onTap;
 
   const ProductCard({
     Key? key,
-    required this.title,
-    required this.subtitle,
-    required this.image,
-    required this.backgroundColor,
+    required this.product,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: product.backgroundColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -293,9 +248,7 @@ class ProductCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            // Navigation vers le détail du produit
-          },
+          onTap: onTap,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Column(
@@ -307,17 +260,15 @@ class ProductCard extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     child: Image.asset(
-                      image,
-                      
-
+                      product.image,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
-                          color: backgroundColor,
+                          color: product.backgroundColor,
                           child: Icon(
-                            _getIconForProduct(title),
+                            _getIconForProduct(product.title),
                             size: 40,
-                            color: _getColorForProduct(title),
+                            color: _getColorForProduct(product.title),
                           ),
                         );
                       },
@@ -331,25 +282,39 @@ class ProductCard extends StatelessWidget {
                     padding: EdgeInsets.all(12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.title,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              product.subtitle,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey[600],
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        // Prix
                         Text(
-                          title,
+                          product.price,
                           style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
                             color: Colors.black87,
                           ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -401,3 +366,6 @@ class ProductCard extends StatelessWidget {
     }
   }
 }
+
+
+
