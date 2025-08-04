@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodexpress/Produit.dart';
 import 'package:foodexpress/authentification/authentification.dart';
-import 'package:foodexpress/favorites.dart';
 
 void main() {
   runApp(MyApp());
@@ -56,7 +54,7 @@ class _AcceuilState extends State<Acceuil> {
             onPressed: () {
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Favorites()),
+              MaterialPageRoute(builder: (context) => AuthWrapper()),
               );
             },          ),
             
