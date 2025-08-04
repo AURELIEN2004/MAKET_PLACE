@@ -11,7 +11,7 @@ class Profil extends StatelessWidget {
         backgroundColor: const Color(0xFFF9F7F4),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -44,7 +44,7 @@ class Profil extends StatelessWidget {
         // Avatar
         CircleAvatar(
           radius: 60,
-          backgroundImage: const AssetImage('assets/images/sophie.png'), // Assurez-vous que l'image est dans votre dossier assets
+          backgroundImage: const AssetImage('assets/images/avatar_sophie.png'), // Assurez-vous que l'image est dans votre dossier assets
           backgroundColor: const Color(0xFFEADDD8),
         ),
         const SizedBox(height: 15),
