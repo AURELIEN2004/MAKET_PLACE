@@ -26,7 +26,7 @@ class Panier extends StatelessWidget {
             ),
             ItemCard(
               image: 'assets/images/miel.png',
-              title: 'Pommes de terre 1kg',
+              title: 'miel pur 1kg',
             ),
             const SizedBox(height: 20),
             const Text(
@@ -80,6 +80,8 @@ class ItemCard extends StatelessWidget {
               child: Text("1"), // Quantité fixe pour l'exemple
             ),
             Icon(Icons.add_circle_outline),
+            // pour supprimer le produit du panier, vous pouvez ajouter un bouton ici
+            Icon(Icons.delete_outline, color: Colors.red),
           ],
         ),
       ),
