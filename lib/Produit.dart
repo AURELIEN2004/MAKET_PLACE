@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodexpress/details.dart';
 
 
 
@@ -75,21 +76,34 @@ class Produit extends StatelessWidget {
             SizedBox(height: 20),
 
             // Section Tomates - Pommes
-            ProductSection(
-              leftProduct: ProductInfo(
-                title: 'Tomates',
-                subtitle: 'Fraîches, locales',
-                image: 'assets/images/tomates.png',
-                backgroundColor: Colors.red[100]!,
-              ),
-              rightProduct: ProductInfo(
-                title: 'Pommes',
-                subtitle: 'Douces et croquantes',
-                image: 'assets/images/pommes.png',
-                backgroundColor: Colors.green[50]!,
-              ),
-            ),
-            SizedBox(height: 16),
+           ProductSection(
+  leftProduct: ProductInfo(
+    title: 'Tomates',
+    subtitle: 'Fraîches, locales',
+    image: 'assets/images/tomates.png',
+    backgroundColor: Colors.red[100]!,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) =>Details()),
+      );
+    },  
+  ),
+
+  rightProduct: ProductInfo(
+    title: 'Pommes',
+    subtitle: 'Douces et croquantes',
+    image: 'assets/images/pommes.png',
+    backgroundColor: Colors.green[50]!,
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Details()),
+      );
+    },
+  ),
+),
+
 
             // Section Carottes - Lait
             ProductSection(
@@ -176,18 +190,38 @@ class FilterButton extends StatelessWidget {
   }
 }
 
-class ProductInfo {
+class ProductInfo extends StatelessWidget {
   final String title;
   final String subtitle;
   final String image;
   final Color backgroundColor;
+  final VoidCallback? onTap; // 👉 ajoute cette ligne
 
-  ProductInfo({
+  const ProductInfo({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.image,
     required this.backgroundColor,
+    this.onTap, // 👉 ajoute ceci aussi
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap, // 👈 rend toute la carte cliquable
+      child: Container(
+        color: backgroundColor,
+        child: Column(
+          children: [
+            Image.asset(image, width: 120, height: 120),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            Text(subtitle),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class ProductSection extends StatelessWidget {
