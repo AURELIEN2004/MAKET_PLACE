@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodexpress/authentification/authentification.dart';
+import 'package:foodexpress/authentification/auth_wrapper.dart';
 
 void main() {
   runApp(MyApp());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodexpress/authentification/authentification.dart';
+import 'package:foodexpress/authentification/profile_screen.dart';
 
 class Profil extends StatelessWidget {
   const Profil({super.key});
@@ -11,12 +11,7 @@ class Profil extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFF9F7F4),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        
         title: const Text(
           'Profil',
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
