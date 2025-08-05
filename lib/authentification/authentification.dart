@@ -1,27 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:foodexpress/favorites.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App Authentification',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: AuthWrapper(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+
+
 
 class AuthWrapper extends StatefulWidget {
   @override
@@ -199,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (success) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ProfileScreen()),
+          MaterialPageRoute(builder: (context) => Favorites()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodexpress/authentification/authentification.dart';
 
 class Profil extends StatelessWidget {
   const Profil({super.key});
@@ -88,7 +89,41 @@ class Profil extends StatelessWidget {
         const SizedBox(height: 20),
 
         // Liste des options
-        _buildSettingsOption(context, Icons.person_outline, 'Informations personnelles'),
+        
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+              ],
+            ),
+            child: ListTile(
+              leading: const Icon(Icons.person_outline, color: Color(0xFFB17E7B)),
+              title: const Text(
+          'Informations personnelles',
+          style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFF333333),
+          ),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+            ),
+          ),
+        ),
         const SizedBox(height: 10),
         _buildSettingsOption(context, Icons.access_time, 'Historique des commandes'),
         const SizedBox(height: 10),
