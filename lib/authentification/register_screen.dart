@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'auth_models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:foodexpress/authentification/auth_models.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,7 +11,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
 
-  // Contrôleurs pour l'inscription
   final _nomController = TextEditingController();
   final _prenomController = TextEditingController();
   final _telephoneController = TextEditingController();
@@ -24,30 +24,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
         _isLoading = true;
       });
 
-      User newUser = User(
-        email: _registerEmailController.text,
-        password: _registerPasswordController.text,
-        nom: _nomController.text,
-        prenom: _prenomController.text,
-        telephone: _telephoneController.text,
-      );
-
-      bool success = await AuthService.register(newUser);
-
-      setState(() {
-        _isLoading = false;
-      });
-
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Compte créé avec succès!')),
+      try {
+        await AuthService.register(
+          _registerEmailController.text,
+          _registerPasswordController.text,
+          {
+            'nom': _nomController.text,
+            'prenom': _prenomController.text,
+            'telephone': _telephoneController.text,
+          },
         );
-        // Retourner à la page de connexion
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Inscription réussie ! Veuillez vérifier votre email.')),
+        );
         Navigator.pop(context);
-      } else {
+      } on AuthException catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Email déjà utilisé')),
+          SnackBar(content: Text(error.message)),
         );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Une erreur inattendue est survenue.')),
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
   }
@@ -56,27 +60,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Créer un compte'),
+        title: const Text('Créer un compte'),
         backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: 30),
-              Icon(
+              const SizedBox(height: 30),
+              const Icon(
                 Icons.person_add,
                 size: 100,
                 color: Colors.blue,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               
-              // Formulaire d'inscription
               TextFormField(
                 controller: _nomController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Nom',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
@@ -88,10 +91,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _prenomController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Prénom',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person_outline),
@@ -103,10 +106,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _telephoneController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Téléphone',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.phone),
@@ -118,10 +121,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _registerEmailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email),
@@ -136,10 +139,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _registerPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Mot de passe',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock),
@@ -155,10 +158,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Confirmer le mot de passe',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock_outline),
@@ -174,22 +177,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isLoading ? null : _register,
-                child: _isLoading
-                    ? CircularProgressIndicator()
-                    : Text('Créer le compte'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                 ),
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text('Créer le compte'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Déjà un compte ? Se connecter'),
+                child: const Text('Déjà un compte ? Se connecter'),
               ),
             ],
           ),

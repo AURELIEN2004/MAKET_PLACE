@@ -1,39 +1,66 @@
+// lib/authentification/auth_wrapper.dart
+
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'login_screen.dart';
-import 'profile_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:foodexpress/authentification/login_screen.dart';
+import 'package:foodexpress/favorites.dart'; // Importez votre page principale
+import 'package:foodexpress/main.dart';
 
 class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
+
   @override
-  _AuthWrapperState createState() => _AuthWrapperState();
+  State<AuthWrapper> createState() => _AuthWrapperState();
 }
 
 class _AuthWrapperState extends State<AuthWrapper> {
-  bool isLoggedIn = false;
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
-    checkLoginStatus();
-  }
+    // 1. Vérifier immédiatement l'état initial de la session
+    _checkInitialAuth();
 
-  checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? currentUser = prefs.getString('currentUser');
-    setState(() {
-      isLoggedIn = currentUser != null;
-      isLoading = false;
+    // 2. Écouter les changements d'état d'authentification
+    supabase.auth.onAuthStateChange.listen((data) {
+      final AuthChangeEvent event = data.event;
+      if (event == AuthChangeEvent.signedIn) {
+        // Redirige vers la page principale Favorites
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => Favorites()),
+        );
+      } else if (event == AuthChangeEvent.signedOut) {
+        // Redirige vers la page de connexion
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      }
     });
+  }
+  
+  // Fonction pour vérifier l'état initial de la session
+  Future<void> _checkInitialAuth() async {
+    // S'assurer que le widget est monté avant de faire une redirection
+    await Future.delayed(Duration.zero);
+    final session = supabase.auth.currentSession;
+    if (session == null) {
+      // Pas de session, on va sur la page de connexion
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    } else {
+      // Session active, on va sur la page principale
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Favorites()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-    return isLoggedIn ? ProfileScreen() : LoginScreen();
+    // Retourne un indicateur de chargement pour les très courts instants
+    // avant que l'état initial ne soit vérifié.
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
   }
 }

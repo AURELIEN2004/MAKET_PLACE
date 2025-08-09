@@ -1,7 +1,11 @@
+// lib/authentification/login_screen.dart
+
 import 'package:flutter/material.dart';
+import 'package:foodexpress/authentification/auth_models.dart';
+import 'package:foodexpress/authentification/register_screen.dart';
 import 'package:foodexpress/favorites.dart';
-import 'auth_models.dart';
-import 'register_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+// Importez le fichier favorites.dart si ce n'est pas déjà fait.
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,24 +24,33 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = true;
       });
 
-      bool success = await AuthService.login(
-        _emailController.text,
-        _passwordController.text,
-      );
+      try {
+        await AuthService.login(
+          _emailController.text,
+          _passwordController.text,
+        );
 
-      setState(() {
-        _isLoading = false;
-      });
-
-      if (success) {
+        // Redirigez l'utilisateur vers la page Favorites après une connexion réussie
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Favorites()),
         );
-      } else {
+
+      } on AuthException catch (error) {
+        // En cas d'échec, le catch est appelé et le message d'erreur est affiché.
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Email ou mot de passe incorrect')),
+          SnackBar(content: Text(error.message)),
         );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Une erreur inattendue est survenue.')),
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
   }
@@ -46,27 +59,26 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Connexion'),
+        title: const Text('Connexion'),
         backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              SizedBox(height: 50),
-              Icon(
+              const SizedBox(height: 50),
+              const Icon(
                 Icons.account_circle,
                 size: 100,
                 color: Colors.blue,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               
-              // Formulaire de connexion
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email),
@@ -81,10 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Mot de passe',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock),
@@ -97,17 +109,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isLoading ? null : _login,
-                child: _isLoading
-                    ? CircularProgressIndicator()
-                    : Text('Se connecter'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                 ),
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text('Se connecter'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -115,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );
                 },
-                child: Text('Créer un compte'),
+                child: const Text('Créer un compte'),
               ),
             ],
           ),

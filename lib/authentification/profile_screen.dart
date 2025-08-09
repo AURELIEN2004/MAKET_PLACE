@@ -1,8 +1,10 @@
+// lib/profile_screen.dart
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'auth_models.dart';
-import 'login_screen.dart';
+import 'package:foodexpress/authentification/auth_models.dart';
+import 'package:foodexpress/main.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -29,15 +31,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> loadCurrentUser() async {
-    User? user = await AuthService.getCurrentUser();
+    final user = supabase.auth.currentUser;
     if (user != null) {
-      setState(() {
-        currentUser = user;
-        _nomController.text = user.nom;
-        _prenomController.text = user.prenom;
-        _telephoneController.text = user.telephone;
-        _emailController.text = user.email;
-      });
+      try {
+        final userData = await supabase.from('profiles').select().eq('id', user.id).single();
+        setState(() {
+          currentUser = User.fromMap(userData);
+          _nomController.text = currentUser!.nom;
+          _prenomController.text = currentUser!.prenom;
+          _telephoneController.text = currentUser!.telephone;
+          _emailController.text = user.email!;
+        });
+      } catch (e) {
+        print('Erreur lors du chargement des données de l\'utilisateur: $e');
+      }
     }
   }
 
@@ -52,23 +59,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _saveProfile() async {
     if (_formKey.currentState!.validate() && currentUser != null) {
-      User updatedUser = User(
-        email: currentUser!.email, // L'email ne change pas
-        password: currentUser!.password,
-        nom: _nomController.text,
-        prenom: _prenomController.text,
-        telephone: _telephoneController.text,
-        photoPath: _imageFile?.path ?? currentUser!.photoPath,
-      );
+      final updatedData = {
+        'nom': _nomController.text,
+        'prenom': _prenomController.text,
+        'telephone': _telephoneController.text,
+      };
 
-      bool success = await AuthService.updateUser(updatedUser);
-      if (success) {
+      try {
+        await AuthService.updateUser(updatedData);
         setState(() {
-          currentUser = updatedUser;
+          currentUser!.nom = _nomController.text;
+          currentUser!.prenom = _prenomController.text;
+          currentUser!.telephone = _telephoneController.text;
           isEditing = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Profil mis à jour avec succès')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Échec de la mise à jour du profil: $e')),
         );
       }
     }
@@ -76,10 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _logout() async {
     await AuthService.logout();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
   }
 
   @override
@@ -92,13 +98,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        // Icon pour retourner à la page précédente
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: Text('Informations personnelles'),
         backgroundColor: Colors.blue,
         actions: [
@@ -127,7 +126,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              // Photo de profil
               GestureDetector(
                 onTap: isEditing ? _pickImage : null,
                 child: CircleAvatar(
@@ -152,7 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
               SizedBox(height: 30),
               
-              // Nom
               TextFormField(
                 controller: _nomController,
                 decoration: InputDecoration(
@@ -170,7 +167,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 16),
               
-              // Prénom
               TextFormField(
                 controller: _prenomController,
                 decoration: InputDecoration(
@@ -188,7 +184,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 16),
               
-              // Téléphone
               TextFormField(
                 controller: _telephoneController,
                 decoration: InputDecoration(
@@ -206,7 +201,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               SizedBox(height: 16),
               
-              // Email (non modifiable)
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -214,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email),
                 ),
-                enabled: false, // L'email n'est jamais modifiable
+                enabled: false, 
               ),
               SizedBox(height: 30),
               
@@ -236,7 +230,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onPressed: () {
                           setState(() {
                             isEditing = false;
-                            // Restaurer les valeurs originales
                             _nomController.text = currentUser!.nom;
                             _prenomController.text = currentUser!.prenom;
                             _telephoneController.text = currentUser!.telephone;

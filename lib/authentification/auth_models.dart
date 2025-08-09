@@ -1,9 +1,10 @@
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+// lib/auth_models.dart
+
+import 'package:foodexpress/main.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'; // Assurez-vous d'avoir cette importation
 
 class User {
   String email;
-  String password;
   String nom;
   String prenom;
   String telephone;
@@ -11,95 +12,82 @@ class User {
 
   User({
     required this.email,
-    required this.password,
     required this.nom,
     required this.prenom,
     required this.telephone,
     this.photoPath,
   });
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      'email': email,
-      'password': password,
       'nom': nom,
       'prenom': prenom,
       'telephone': telephone,
-      'photoPath': photoPath,
+      'photo_path': photoPath,
     };
   }
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      email: json['email'],
-      password: json['password'],
-      nom: json['nom'],
-      prenom: json['prenom'],
-      telephone: json['telephone'],
-      photoPath: json['photoPath'],
+      email: map['email'] ?? 'N/A',
+      nom: map['nom'] ?? 'N/A',
+      prenom: map['prenom'] ?? 'N/A',
+      telephone: map['telephone'] ?? 'N/A',
+      photoPath: map['photo_path'],
     );
   }
 }
 
 class AuthService {
-  static Future<bool> register(User user) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> users = prefs.getStringList('users') ?? [];
-    
-    // Vérifier si l'email existe déjà
-    for (String userJson in users) {
-      User existingUser = User.fromJson(json.decode(userJson));
-      if (existingUser.email == user.email) {
-        return false; // Email déjà utilisé
-      }
+  static Future<void> register(
+      String email, String password, Map<String, dynamic> userMetadata) async {
+    final AuthResponse response = await supabase.auth.signUp(
+      email: email,
+      password: password,
+    );
+
+    // Vérifie si l'utilisateur a été créé avec succès
+    if (response.user != null) {
+      // Insère les données supplémentaires dans la table 'profiles'
+      await supabase.from('profiles').insert({
+        'id': response.user!.id, // L'ID de l'utilisateur est la clé primaire
+        'email': email,
+        'nom': userMetadata['nom'],
+        'prenom': userMetadata['prenom'],
+        'telephone': userMetadata['telephone'],
+      });
     }
-    
-    users.add(json.encode(user.toJson()));
-    await prefs.setStringList('users', users);
-    return true;
   }
 
-  static Future<bool> login(String email, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> users = prefs.getStringList('users') ?? [];
-    
-    for (String userJson in users) {
-      User user = User.fromJson(json.decode(userJson));
-      if (user.email == email && user.password == password) {
-        await prefs.setString('currentUser', userJson);
-        return true;
-      }
-    }
-    return false;
+  static Future<void> login(String email, String password) async {
+    await supabase.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
   }
 
   static Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('currentUser');
+    await supabase.auth.signOut();
+  }
+
+  static Future<void> updateUser(Map<String, dynamic> data) async {
+    final userId = supabase.auth.currentUser!.id;
+    await supabase
+        .from('profiles')
+        .update(data)
+        .eq('id', userId);
   }
 
   static Future<User?> getCurrentUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? currentUserJson = prefs.getString('currentUser');
-    if (currentUserJson != null) {
-      return User.fromJson(json.decode(currentUserJson));
+    final user = supabase.auth.currentUser;
+    if (user != null) {
+      final response = await supabase
+          .from('profiles')
+          .select()
+          .eq('id', user.id)
+          .single();
+      return User.fromMap(response);
     }
     return null;
-  }
-
-  static Future<bool> updateUser(User updatedUser) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> users = prefs.getStringList('users') ?? [];
-    
-    for (int i = 0; i < users.length; i++) {
-      User user = User.fromJson(json.decode(users[i]));
-      if (user.email == updatedUser.email) {
-        users[i] = json.encode(updatedUser.toJson());
-        await prefs.setStringList('users', users);
-        await prefs.setString('currentUser', json.encode(updatedUser.toJson()));
-        return true;
-      }
-    }
-    return false;
   }
 }
