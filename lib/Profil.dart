@@ -119,7 +119,9 @@ class Profil extends StatelessWidget {
             ),
           ),
         ),
+        
         const SizedBox(height: 10),
+        
         _buildSettingsOption(context, Icons.access_time, 'Historique des commandes'),
         const SizedBox(height: 10),
         _buildSettingsOption(context, Icons.location_on_outlined, 'Adresses de livraison'),
