@@ -57,13 +57,7 @@ class Profil extends StatelessWidget {
         const SizedBox(height: 5),
 
         // Email de l'utilisateur
-        const Text(
-          'sophie.martin@email.com',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFFB17E7B),
-          ),
-        ),
+    
       ],
     );
   }
@@ -127,6 +121,9 @@ class Profil extends StatelessWidget {
         _buildSettingsOption(context, Icons.location_on_outlined, 'Adresses de livraison'),
         const SizedBox(height: 10),
         _buildSettingsOption(context, Icons.credit_card, 'Préférences de paiement'),
+        const SizedBox(height: 10),
+        //boutton de deconnexion
+        _buildSettingsOption(context, Icons.logout, 'Se déconnecter'),
       ],
     );
   }

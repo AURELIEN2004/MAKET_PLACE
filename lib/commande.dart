@@ -55,7 +55,7 @@ class _CommandeState extends State<Commande> {
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
-                      labelText: "Ville",
+                      labelText: "Adresse livraison",
                       border: OutlineInputBorder(),
                     ),
                   ),
