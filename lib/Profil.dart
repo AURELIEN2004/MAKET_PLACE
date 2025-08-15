@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodexpress/authentification/profile_screen.dart';
+import 'package:foodexpress/screens/profile_screen.dart';
 
 class Profil extends StatelessWidget {
   const Profil({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodexpress/Acceuil.dart';
-import 'package:foodexpress/Profil.dart';
+import 'package:foodexpress/screens/home_screen.dart';
 import 'package:foodexpress/Produit.dart';
 import 'package:foodexpress/panier.dart';
 
@@ -20,7 +20,7 @@ import 'package:foodexpress/panier.dart';
     Acceuil(),
     Produit(),
     Panier(),
-    Profil(),
+    HomeScreen(),
   ];
 
 

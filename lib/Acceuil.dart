@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodexpress/authentification/auth_wrapper.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,17 +47,17 @@ class _AcceuilState extends State<Acceuil> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: Colors.black),
-            onPressed: () {
-              Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AuthWrapper()),
-              );
-            },          ),
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.search, color: Colors.black),
+        //     onPressed: () {
+        //       Navigator.push(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => AuthWrapper()),
+        //       );
+        //     },          ),
             
-        ],
+        // ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
