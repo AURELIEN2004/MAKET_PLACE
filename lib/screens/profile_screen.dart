@@ -43,6 +43,7 @@ class ProfileScreen extends StatelessWidget {
                       Text(
                         'Informations personnelles',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
                         ),
@@ -73,7 +74,8 @@ class ProfileScreen extends StatelessWidget {
                         context,
                         'Date d\'inscription',
                         user?.createdAt != null 
-                            ? DateTime.parse(user!.createdAt!).toLocal().toString().split(' ')[0]
+                            // ? DateTime.parse(user!.createdAt!).toLocal().toString().split(' ')[0]  ancienne version  s il ya probleme de creation de compte
+                           ? DateTime.parse(user!.createdAt).toLocal().toString().split(' ')[0]
                             : 'Non disponible',
                         Icons.calendar_today,
                       ),

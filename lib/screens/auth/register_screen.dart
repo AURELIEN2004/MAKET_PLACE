@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../main.dart';
@@ -37,7 +39,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      final AuthResponse response = await supabase.auth.signUp(
+       final AuthResponse response = await supabase.auth.signUp(
+      // final AuthResponse response = await supabase.auth.signUp(   en cas de probleme de connexion
         email: _emailController.text.trim(),
         password: _passwordController.text,
         data: {
