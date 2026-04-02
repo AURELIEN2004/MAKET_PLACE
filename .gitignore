@@ -1,0 +1,16 @@
+# Flutter
+**/build/
+**/.dart_tool/
+**/.packages
+**/pubspec.lock
+
+# Django
+**/env/
+**/venv/
+**/__pycache__/
+**/*.pyc
+**/db.sqlite3
+**/.env
+
+# OS
+.DS_Store
