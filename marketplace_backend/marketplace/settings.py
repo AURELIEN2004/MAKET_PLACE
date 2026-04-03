@@ -281,8 +281,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://127.0.0.1:8080',
 ]
-
-# En développement, autoriser toutes les origines
+CORS_ALLOWED_ORIGINS = [
+    "https://maket-place-tan.vercel.app",
+]# En développement, autoriser toutes les origines
 # ⚠️ Mettez False en production et listez vos domaines dans CORS_ALLOWED_ORIGINS
 CORS_ALLOW_ALL_ORIGINS = True
 
