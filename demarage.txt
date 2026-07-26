@@ -1,0 +1,6 @@
+cd maketplace_frontend
+flutter run -d chrome
+
+cd marketplace_backend
+source env/bin/activate
+python3 manage.py runserver
