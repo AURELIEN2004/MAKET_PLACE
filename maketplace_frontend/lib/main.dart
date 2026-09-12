@@ -1,7 +1,7 @@
 // lib/main.dart
 // ============================================
 // Point d'entrée — Supabase supprimé, JWT à la place
-// ============================================
+// ===========================================
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
 
