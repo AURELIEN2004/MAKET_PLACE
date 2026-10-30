@@ -12,11 +12,12 @@ void main() {
 class MyApp extends StatelessWidget {   
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {  
     return MaterialApp(
       title: 'Marketplace',
-      debugShowCheckedModeBanner: false,  
+      debugShowCheckedModeBanner: false,    
       theme: ThemeData(
         primaryColor: Colors.redAccent,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
